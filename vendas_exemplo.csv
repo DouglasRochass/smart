@@ -1,0 +1,27 @@
+produtoId,nomeProduto,quantidadeVendida,precoUnitario,mercadoId,nomeMercado,funcionarioId,nomeFuncionario,dataVenda,categoria,observacoes,numeroNota
+PROD001,Arroz Integral 5kg,10,25.50,MER001,Mercado Centro,FUNC001,João Silva,2026-03-20 08:00:00,Grãos,Estoque inicial,NF-2026-0001
+PROD002,Feijão Carioca 1kg,25,8.75,MER001,Mercado Centro,FUNC002,Maria Santos,2026-03-20 09:30:00,Grãos,Reabastecimento,NF-2026-0002
+PROD003,Suco Natural 1L,15,6.99,MER002,Mercado Vila,FUNC001,João Silva,2026-03-20 10:15:00,Bebidas,Promoção,NF-2026-0003
+PROD004,Leite Integral 1L,30,4.50,MER001,Mercado Centro,FUNC003,Pedro Costa,2026-03-20 11:00:00,Lácteos,,NF-2026-0004
+PROD005,Pão Francês kg,20,12.00,MER002,Mercado Vila,FUNC002,Maria Santos,2026-03-20 06:00:00,Padaria,Venda matinal,NF-2026-0005
+PROD006,Detergente Neutro 500ml,50,2.50,MER001,Mercado Centro,FUNC001,João Silva,2026-03-20 07:30:00,Limpeza,,NF-2026-0006
+PROD007,Sabão em Pó 1kg,35,12.00,MER001,Mercado Centro,FUNC003,Pedro Costa,2026-03-20 09:00:00,Limpeza,Promoção 2+1,NF-2026-0007
+PROD008,Macarrão Integral 500g,45,3.50,MER002,Mercado Vila,FUNC002,Maria Santos,2026-03-20 08:30:00,Alimentos,Oferta especial,NF-2026-0008
+PROD009,Azeite Extra Virgem 500ml,12,22.00,MER001,Mercado Centro,FUNC001,João Silva,2026-03-20 10:00:00,Óleos,Produto premium,NF-2026-0009
+PROD010,Café Torrado 500g,40,15.50,MER002,Mercado Vila,FUNC003,Pedro Costa,2026-03-20 07:00:00,Bebidas,Fornecedor novo,NF-2026-0010
+PROD011,Açúcar Cristal 1kg,28,3.75,MER001,Mercado Centro,FUNC002,Maria Santos,2026-03-20 11:30:00,Alimentos,,NF-2026-0011
+PROD012,Sal Fino Iodado 1kg,22,2.50,MER002,Mercado Vila,FUNC001,João Silva,2026-03-20 12:00:00,Alimentos,,NF-2026-0012
+PROD013,Óleo de Soja 900ml,38,5.80,MER001,Mercado Centro,FUNC003,Pedro Costa,2026-03-20 13:00:00,Óleos,Reabastecimento,NF-2026-0013
+PROD014,Farinha de Trigo 1kg,32,2.30,MER002,Mercado Vila,FUNC002,Maria Santos,2026-03-20 14:00:00,Alimentos,,NF-2026-0014
+PROD015,Fermento Biológico 500g,8,25.00,MER001,Mercado Centro,FUNC001,João Silva,2026-03-20 15:00:00,Alimentos,Produto caro,NF-2026-0015
+PROD016,Melado 500ml,18,8.50,MER002,Mercado Vila,FUNC003,Pedro Costa,2026-03-20 16:00:00,Alimentos,Regional,NF-2026-0016
+PROD017,Vinagre Branco 750ml,25,3.20,MER001,Mercado Centro,FUNC002,Maria Santos,2026-03-20 17:00:00,Alimentos,,NF-2026-0017
+PROD018,Molho de Tomate 500g,55,2.80,MER002,Mercado Vila,FUNC001,João Silva,2026-03-20 18:00:00,Alimentos,Marca popular,NF-2026-0018
+PROD019,Extrato de Tomate 140g,42,4.00,MER001,Mercado Centro,FUNC003,Pedro Costa,2026-03-20 19:00:00,Alimentos,,NF-2026-0019
+PROD020,Caldo de Carne 75g,60,1.50,MER002,Mercado Vila,FUNC002,Maria Santos,2026-03-20 20:00:00,Alimentos,Promoção,NF-2026-0020
+PROD021,Sopa Instantânea 80g,70,1.80,MER001,Mercado Centro,FUNC001,João Silva,2026-03-21 08:00:00,Alimentos,Venda noturna,NF-2026-0021
+PROD022,Biscoito Água e Sal 200g,48,2.50,MER002,Mercado Vila,FUNC003,Pedro Costa,2026-03-21 09:00:00,Alimentos,,NF-2026-0022
+PROD023,Chocolate em Pó 400g,35,6.50,MER001,Mercado Centro,FUNC002,Maria Santos,2026-03-21 10:00:00,Alimentos,Para crianças,NF-2026-0023
+PROD024,Gelatina 25g,100,0.80,MER002,Mercado Vila,FUNC001,João Silva,2026-03-21 11:00:00,Alimentos,Promoção liquidação,NF-2026-0024
+PROD025,Açúcar de Confeiteiro 500g,20,4.20,MER001,Mercado Centro,FUNC003,Pedro Costa,2026-03-21 12:00:00,Alimentos,,NF-2026-0025
+
