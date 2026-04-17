@@ -24,34 +24,34 @@ INSERT INTO fornecedores (id, nome, telefone, email, endereco, cnpj) VALUES
  (3, 'Forn Sul', '3199776655', 'suporte@fornsul.com', 'Praça Sul, 50', '34.567.890/0001-22'),
  (4, 'Forn Leste', '2133445566', 'info@fornleste.com', 'Rua Leste, 30', '45.678.901/0001-33');
 
--- Usuarios (cargos: MASTER, GERENTE, FUNCIONARIO)
+-- Usuarios (cargos: 0=FUNCIONARIO, 1=GERENTE, 2=MASTER)
 INSERT INTO usuarios (id, nome_colaborador, email, senha, cargos, mercado_id, ativo, cpf, tipo) VALUES
- (1, 'Alice Admin', 'alice.admin@example.com', 'senha123', 'MASTER', 1, 1, '00011122233', 'admin'),
- (2, 'Bob Operador', 'bob.operador@example.com', 'senha123', 'FUNCIONARIO', 1, 1, '11122233344', 'operador'),
- (3, 'Clara Operadora', 'clara.operadora@example.com', 'senha123', 'FUNCIONARIO', 2, 1, '22233344455', 'operador'),
- (4, 'Diego Supervisor', 'diego.supervisor@example.com', 'senha123', 'GERENTE', 2, 1, '33344455566', 'gerente'),
- (5, 'Elaine Master', 'elaine.master@example.com', 'senha123', 'MASTER', 3, 1, '44455566677', 'admin'),
- (6, 'Fernando Func', 'fernando.func@example.com', 'senha123', 'FUNCIONARIO', 3, 1, '55566677788', 'operador');
+ (1, 'Alice Admin', 'alice.admin@example.com', 'senha123', 2, 1, 1, '00011122233', 'admin'),
+ (2, 'Bob Operador', 'bob.operador@example.com', 'senha123', 0, 1, 1, '11122233344', 'operador'),
+ (3, 'Clara Operadora', 'clara.operadora@example.com', 'senha123', 0, 2, 1, '22233344455', 'operador'),
+ (4, 'Diego Supervisor', 'diego.supervisor@example.com', 'senha123', 1, 2, 1, '33344455566', 'gerente'),
+ (5, 'Elaine Master', 'elaine.master@example.com', 'senha123', 2, 3, 1, '44455566677', 'admin'),
+ (6, 'Fernando Func', 'fernando.func@example.com', 'senha123', 0, 3, 1, '55566677788', 'operador');
 
--- Funcionarios (cargos: FUNCIONARIO)
+-- Funcionarios (cargos: 0=FUNCIONARIO)
 INSERT INTO funcionarios (id, nome_colaborador, email, senha, cargos, mercado_id, ativo, cpf, idade) VALUES
- (1, 'Carlos Func', 'carlos.func@example.com', 'senha123', 'FUNCIONARIO', 1, 1, '66677788899', 30),
- (2, 'Diana Func', 'diana.func@example.com', 'senha123', 'FUNCIONARIO', 1, 1, '77788899900', 28),
- (3, 'Henrique Func', 'henrique.func@example.com', 'senha123', 'FUNCIONARIO', 2, 1, '88899900011', 35),
- (4, 'Isabela Func', 'isabela.func@example.com', 'senha123', 'FUNCIONARIO', 2, 1, '99900011122', 26),
- (5, 'Joana Func', 'joana.func@example.com', 'senha123', 'FUNCIONARIO', 3, 1, '00011122244', 32),
- (6, 'Kaique Func', 'kaique.func@example.com', 'senha123', 'FUNCIONARIO', 3, 1, '11122233355', 29),
- (7, 'Lucas Func', 'lucas.func@example.com', 'senha123', 'FUNCIONARIO', 4, 1, '22233344566', 31),
- (8, 'Marina Func', 'marina.func@example.com', 'senha123', 'FUNCIONARIO', 5, 1, '33344455677', 27);
+ (1, 'Carlos Func', 'carlos.func@example.com', 'senha123', 0, 1, 1, '66677788899', 30),
+ (2, 'Diana Func', 'diana.func@example.com', 'senha123', 0, 1, 1, '77788899900', 28),
+ (3, 'Henrique Func', 'henrique.func@example.com', 'senha123', 0, 2, 1, '88899900011', 35),
+ (4, 'Isabela Func', 'isabela.func@example.com', 'senha123', 0, 2, 1, '99900011122', 26),
+ (5, 'Joana Func', 'joana.func@example.com', 'senha123', 0, 3, 1, '00011122244', 32),
+ (6, 'Kaique Func', 'kaique.func@example.com', 'senha123', 0, 3, 1, '11122233355', 29),
+ (7, 'Lucas Func', 'lucas.func@example.com', 'senha123', 0, 4, 1, '22233344566', 31),
+ (8, 'Marina Func', 'marina.func@example.com', 'senha123', 0, 5, 1, '33344455677', 27);
 
--- Gerentes (cargos: GERENTE)
+-- Gerentes (cargos: 1=GERENTE)
 INSERT INTO gerentes (id, nome_colaborador, email, senha, cargos, mercado_id, ativo, cpf, departamento) VALUES
- (1, 'Eva Gerente', 'eva.gerente@example.com', 'senha123', 'GERENTE', 1, 1, '44455566788', 'Vendas'),
- (2, 'Felipe Gerente', 'felipe.gerente@example.com', 'senha123', 'GERENTE', 1, 1, '55566677899', 'Operações'),
- (3, 'Gustavo Gerente', 'gustavo.gerente@example.com', 'senha123', 'GERENTE', 2, 1, '66677788900', 'Logística'),
- (4, 'Helena Gerente', 'helena.gerente@example.com', 'senha123', 'GERENTE', 3, 1, '77788899011', 'Compras'),
- (5, 'Igor Gerente', 'igor.gerente@example.com', 'senha123', 'GERENTE', 4, 1, '88899900122', 'Estoque'),
- (6, 'Julia Gerente', 'julia.gerente@example.com', 'senha123', 'GERENTE', 5, 1, '99900011233', 'RH');
+ (1, 'Eva Gerente', 'eva.gerente@example.com', 'senha123', 1, 1, 1, '44455566788', 'Vendas'),
+ (2, 'Felipe Gerente', 'felipe.gerente@example.com', 'senha123', 1, 1, 1, '55566677899', 'Operações'),
+ (3, 'Gustavo Gerente', 'gustavo.gerente@example.com', 'senha123', 1, 2, 1, '66677788900', 'Logística'),
+ (4, 'Helena Gerente', 'helena.gerente@example.com', 'senha123', 1, 3, 1, '77788899011', 'Compras'),
+ (5, 'Igor Gerente', 'igor.gerente@example.com', 'senha123', 1, 4, 1, '88899900122', 'Estoque'),
+ (6, 'Julia Gerente', 'julia.gerente@example.com', 'senha123', 1, 5, 1, '99900011233', 'RH');
 
 -- Produtos
 INSERT INTO produtos (id, nome, descricao, preco, quantidade, fornecedor_id, categoria) VALUES

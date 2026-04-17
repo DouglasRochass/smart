@@ -80,36 +80,38 @@ public class ProdutoController {
     /**
      * Criar novo produto
      * POST /api/produtos
+     * 
      * Restrição: Somente Gerentes e Masters podem criar produtos
      * Funcionários não podem criar produtos
-     * Header: gerente-cargo (Cargos do usuário autenticado)
+     * 
+     * Headers obrigatórios:
+     * - gerente-cargo: Cargo do usuário (GERENTE ou MASTER)
      */
     @PostMapping
     public ResponseEntity<?> create(
             @RequestBody Produtos produto,
-            @RequestHeader(value = "gerente-cargo", required = false) String cargoHeader) {
+            @RequestHeader(value = "gerente-cargo", required = true) String cargoHeader) {
         try {
-            // Se gerente-cargo for fornecido, valida permissão
-            if (cargoHeader != null) {
-                Cargos cargo = Cargos.valueOf(cargoHeader);
-                
-                // Funcionários não podem criar produtos
-                if (cargo == Cargos.FUNCIONARIO) {
-                    return ResponseEntity.status(HttpStatus.FORBIDDEN)
-                        .body("Funcionários não podem cadastrar produtos. Apenas Gerentes e Masters.");
-                }
-                // Verifica se é Gerente ou Master
-                if (cargo != Cargos.GERENTE && cargo != Cargos.MASTER) {
-                    return ResponseEntity.status(HttpStatus.FORBIDDEN)
-                        .body("Apenas Gerentes e Masters podem cadastrar produtos");
-                }
+            // Validar permissão
+            Cargos cargo = Cargos.valueOf(cargoHeader);
+            
+            // Funcionários não podem criar produtos
+            if (cargo == Cargos.FUNCIONARIO) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .body("Funcionários não podem cadastrar produtos. Apenas Gerentes e Masters.");
+            }
+            
+            // Verifica se é Gerente ou Master
+            if (cargo != Cargos.GERENTE && cargo != Cargos.MASTER) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .body("Apenas Gerentes e Masters podem cadastrar produtos");
             }
             
             Produtos saved = produtosRepository.save(produto);
             return ResponseEntity.status(HttpStatus.CREATED).body(saved);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body("Cargo inválido fornecido");
+                .body("Cargo inválido fornecido no header gerente-cargo");
         }
     }
 
@@ -140,29 +142,31 @@ public class ProdutoController {
     /**
      * Deletar produto
      * DELETE /api/produtos/{id}
+     * 
      * Restrição: Somente Gerentes e Masters podem deletar produtos
      * Funcionários não podem deletar produtos
-     * Header: gerente-cargo (Cargos do usuário autenticado)
+     * 
+     * Headers obrigatórios:
+     * - gerente-cargo: Cargo do usuário (GERENTE ou MASTER)
      */
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(
             @PathVariable Long id,
-            @RequestHeader(value = "gerente-cargo", required = false) String cargoHeader) {
+            @RequestHeader(value = "gerente-cargo", required = true) String cargoHeader) {
         try {
-            // Se gerente-cargo for fornecido, valida permissão
-            if (cargoHeader != null) {
-                Cargos cargo = Cargos.valueOf(cargoHeader);
-                
-                // Funcionários não podem deletar produtos
-                if (cargo == Cargos.FUNCIONARIO) {
-                    return ResponseEntity.status(HttpStatus.FORBIDDEN)
-                        .body("Funcionários não podem deletar produtos. Apenas Gerentes e Masters.");
-                }
-                // Verifica se é Gerente ou Master
-                if (cargo != Cargos.GERENTE && cargo != Cargos.MASTER) {
-                    return ResponseEntity.status(HttpStatus.FORBIDDEN)
-                        .body("Apenas Gerentes e Masters podem deletar produtos");
-                }
+            // Validar permissão
+            Cargos cargo = Cargos.valueOf(cargoHeader);
+            
+            // Funcionários não podem deletar produtos
+            if (cargo == Cargos.FUNCIONARIO) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .body("Funcionários não podem deletar produtos. Apenas Gerentes e Masters.");
+            }
+            
+            // Verifica se é Gerente ou Master
+            if (cargo != Cargos.GERENTE && cargo != Cargos.MASTER) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .body("Apenas Gerentes e Masters podem deletar produtos");
             }
             
             if (produtosRepository.existsById(id)) {
@@ -172,7 +176,7 @@ public class ProdutoController {
             return ResponseEntity.notFound().build();
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body("Cargo inválido fornecido");
+                .body("Cargo inválido fornecido no header gerente-cargo");
         }
     }
 }

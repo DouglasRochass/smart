@@ -206,28 +206,49 @@ public class FuncionarioController {
      * Criar novo funcionário
      * POST /api/funcionarios
      * 
-     * Restrição: Um funcionário deve estar em apenas um mercado
+     * Restrição: 
+     * - Um funcionário deve estar em apenas um mercado
+     * - Apenas Gerentes e Masters podem criar funcionários
+     * 
+     * Headers obrigatórios:
+     * - gerente-cargo: Cargo do usuário (GERENTE ou MASTER)
      */
     @PostMapping
-    public ResponseEntity<?> create(@RequestBody Funcionario funcionario) {
-        // Validar que o funcionário tem apenas um mercado
-        if (funcionario.getMercadoId() == null || funcionario.getMercadoId() <= 0) {
+    public ResponseEntity<?> create(
+            @RequestBody Funcionario funcionario,
+            @RequestHeader(value = "gerente-cargo", required = true) String cargoHeader) {
+        try {
+            // Validar permissão
+            Cargos cargo = Cargos.valueOf(cargoHeader);
+            
+            // Apenas Gerentes e Masters podem criar funcionários
+            if (cargo == Cargos.FUNCIONARIO) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .body("Funcionários não podem cadastrar outros funcionários. Apenas Gerentes e Masters.");
+            }
+            
+            // Validar que o funcionário tem apenas um mercado
+            if (funcionario.getMercadoId() == null || funcionario.getMercadoId() <= 0) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("Funcionário deve estar associado a um mercado");
+            }
+
+            // Verificar se já existe outro funcionário com o mesmo CPF
+            List<Funcionario> existentes = funcionarioRepository.findAll();
+            boolean cpfDuplicado = existentes.stream()
+                .anyMatch(f -> f.getCpf().equals(funcionario.getCpf()));
+            
+            if (cpfDuplicado) {
+                return ResponseEntity.status(HttpStatus.CONFLICT)
+                    .body("CPF já cadastrado no sistema");
+            }
+
+            Funcionario saved = funcionarioRepository.save(funcionario);
+            return ResponseEntity.status(HttpStatus.CREATED).body(toDTO(saved));
+        } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body("Funcionário deve estar associado a um mercado");
+                .body("Cargo inválido fornecido no header gerente-cargo");
         }
-
-        // Verificar se já existe outro funcionário com o mesmo CPF
-        List<Funcionario> existentes = funcionarioRepository.findAll();
-        boolean cpfDuplicado = existentes.stream()
-            .anyMatch(f -> f.getCpf().equals(funcionario.getCpf()));
-        
-        if (cpfDuplicado) {
-            return ResponseEntity.status(HttpStatus.CONFLICT)
-                .body("CPF já cadastrado no sistema");
-        }
-
-        Funcionario saved = funcionarioRepository.save(funcionario);
-        return ResponseEntity.status(HttpStatus.CREATED).body(toDTO(saved));
     }
 
     /**
