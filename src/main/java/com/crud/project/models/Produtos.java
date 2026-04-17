@@ -17,21 +17,11 @@ public class Produtos {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "Nome do produto é obrigatório")
     private String nome;
-
-    @NotBlank(message = "Descrição é obrigatória")
     private String descricao;
-
-    @DecimalMin(value = "0.01", message = "Preço deve ser maior que 0")
     private Double preco;
-
-    @Min(value = 0, message = "Quantidade não pode ser negativa")
-    private int quantidade;
-
-    @NotBlank(message = "Fornecedor é obrigatório")
+    private Integer quantidade;  // Mudado de int para Integer
     private Long fornecedorId;
-
     private String categoria;
 
     // Getters explícitos
@@ -39,7 +29,7 @@ public class Produtos {
     public String getNome() { return nome; }
     public String getDescricao() { return descricao; }
     public Double getPreco() { return preco; }
-    public int getQuantidade() { return quantidade; }
+    public Integer getQuantidade() { return quantidade; }
     public Long getFornecedorId() { return fornecedorId; }
     public String getCategoria() { return categoria; }
 
@@ -48,7 +38,7 @@ public class Produtos {
     public void setNome(String nome) { this.nome = nome; }
     public void setDescricao(String descricao) { this.descricao = descricao; }
     public void setPreco(Double preco) { this.preco = preco; }
-    public void setQuantidade(int quantidade) { this.quantidade = quantidade; }
+    public void setQuantidade(Integer quantidade) { this.quantidade = quantidade; }
     public void setFornecedorId(Long fornecedorId) { this.fornecedorId = fornecedorId; }
     public void setCategoria(String categoria) { this.categoria = categoria; }
 }

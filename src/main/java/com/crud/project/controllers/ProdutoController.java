@@ -89,9 +89,13 @@ public class ProdutoController {
      */
     @PostMapping
     public ResponseEntity<?> create(
-            @RequestBody Produtos produto,
+            @RequestBody java.util.Map<String, Object> payload,
             @RequestHeader(value = "gerente-cargo", required = true) String cargoHeader) {
         try {
+            log.info("=== CRIAR PRODUTO ===");
+            log.info("Cargo recebido: {}", cargoHeader);
+            log.info("Payload recebido: {}", payload);
+            
             // Validar permissão
             Cargos cargo = Cargos.valueOf(cargoHeader);
             
@@ -107,11 +111,90 @@ public class ProdutoController {
                     .body("Apenas Gerentes e Masters podem cadastrar produtos");
             }
             
+            // Criar produto manualmente
+            Produtos produto = new Produtos();
+            
+            // Validar e setar nome
+            String nome = (String) payload.get("nome");
+            if (nome == null || nome.trim().isEmpty()) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("Nome do produto é obrigatório");
+            }
+            produto.setNome(nome.trim());
+            
+            // Validar e setar descrição
+            String descricao = (String) payload.get("descricao");
+            if (descricao == null || descricao.trim().isEmpty()) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("Descrição é obrigatória");
+            }
+            produto.setDescricao(descricao.trim());
+            
+            // Validar e setar categoria
+            String categoria = (String) payload.get("categoria");
+            if (categoria == null || categoria.trim().isEmpty()) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("Categoria é obrigatória");
+            }
+            produto.setCategoria(categoria.trim());
+            
+            // Validar e setar preço
+            Object precoObj = payload.get("preco");
+            if (precoObj == null) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("Preço é obrigatório");
+            }
+            Double preco = precoObj instanceof Number ? ((Number) precoObj).doubleValue() : Double.parseDouble(precoObj.toString());
+            if (preco <= 0) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("Preço deve ser maior que zero");
+            }
+            produto.setPreco(preco);
+            
+            // Validar e setar quantidade
+            Object quantidadeObj = payload.get("quantidade");
+            if (quantidadeObj == null) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("Quantidade é obrigatória");
+            }
+            Integer quantidade = quantidadeObj instanceof Number ? ((Number) quantidadeObj).intValue() : Integer.parseInt(quantidadeObj.toString());
+            if (quantidade < 0) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("Quantidade não pode ser negativa");
+            }
+            produto.setQuantidade(quantidade);
+            
+            // Validar e setar fornecedor
+            Object fornecedorIdObj = payload.get("fornecedorId");
+            if (fornecedorIdObj == null) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("Fornecedor é obrigatório");
+            }
+            Long fornecedorId = fornecedorIdObj instanceof Number ? ((Number) fornecedorIdObj).longValue() : Long.parseLong(fornecedorIdObj.toString());
+            if (fornecedorId <= 0) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("Fornecedor inválido");
+            }
+            produto.setFornecedorId(fornecedorId);
+            
+            log.info("Produto a ser salvo: {}", produto);
             Produtos saved = produtosRepository.save(produto);
+            log.info("Produto salvo com sucesso: {}", saved);
+            
             return ResponseEntity.status(HttpStatus.CREATED).body(saved);
+            
         } catch (IllegalArgumentException e) {
+            log.error("Erro de argumento inválido", e);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body("Cargo inválido fornecido no header gerente-cargo");
+                .body("Cargo inválido fornecido no header gerente-cargo: " + e.getMessage());
+        } catch (NumberFormatException e) {
+            log.error("Erro de formato de número", e);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body("Formato de número inválido: " + e.getMessage());
+        } catch (Exception e) {
+            log.error("Erro inesperado ao criar produto", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body("Erro ao criar produto: " + e.getClass().getSimpleName() + " - " + e.getMessage());
         }
     }
 
