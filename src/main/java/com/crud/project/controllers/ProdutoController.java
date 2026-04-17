@@ -212,14 +212,14 @@ public class ProdutoController {
             
             return ResponseEntity.status(HttpStatus.CREATED).body(saved);
             
-        } catch (IllegalArgumentException e) {
-            log.error("Erro de argumento inválido", e);
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body("Erro de validação: " + e.getMessage());
         } catch (NumberFormatException e) {
             log.error("Erro de formato de número", e);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body("Formato de número inválido: " + e.getMessage());
+        } catch (IllegalArgumentException e) {
+            log.error("Erro de argumento inválido", e);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body("Erro de validação: " + e.getMessage());
         } catch (org.springframework.dao.DataAccessException e) {
             log.error("Erro de acesso ao banco de dados", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
