@@ -95,9 +95,18 @@ public class ProdutoController {
             log.info("=== CRIAR PRODUTO ===");
             log.info("Cargo recebido: {}", cargoHeader);
             log.info("Payload recebido: {}", payload);
+            log.info("Payload class: {}", payload.getClass().getName());
             
             // Validar permissão
-            Cargos cargo = Cargos.valueOf(cargoHeader);
+            Cargos cargo;
+            try {
+                cargo = Cargos.valueOf(cargoHeader);
+                log.info("Cargo parseado: {}", cargo);
+            } catch (Exception e) {
+                log.error("Erro ao parsear cargo: {}", cargoHeader, e);
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("Cargo inválido: " + cargoHeader);
+            }
             
             // Funcionários não podem criar produtos
             if (cargo == Cargos.FUNCIONARIO) {
@@ -111,35 +120,45 @@ public class ProdutoController {
                     .body("Apenas Gerentes e Masters podem cadastrar produtos");
             }
             
+            log.info("Permissão validada. Criando produto...");
+            
             // Criar produto manualmente
             Produtos produto = new Produtos();
             
             // Validar e setar nome
+            log.info("Processando nome...");
             String nome = (String) payload.get("nome");
             if (nome == null || nome.trim().isEmpty()) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body("Nome do produto é obrigatório");
             }
             produto.setNome(nome.trim());
+            log.info("Nome setado: {}", produto.getNome());
             
             // Validar e setar descrição
+            log.info("Processando descrição...");
             String descricao = (String) payload.get("descricao");
             if (descricao == null || descricao.trim().isEmpty()) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body("Descrição é obrigatória");
             }
             produto.setDescricao(descricao.trim());
+            log.info("Descrição setada: {}", produto.getDescricao());
             
             // Validar e setar categoria
+            log.info("Processando categoria...");
             String categoria = (String) payload.get("categoria");
             if (categoria == null || categoria.trim().isEmpty()) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body("Categoria é obrigatória");
             }
             produto.setCategoria(categoria.trim());
+            log.info("Categoria setada: {}", produto.getCategoria());
             
             // Validar e setar preço
+            log.info("Processando preço...");
             Object precoObj = payload.get("preco");
+            log.info("Preço objeto: {} (tipo: {})", precoObj, precoObj != null ? precoObj.getClass().getName() : "null");
             if (precoObj == null) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body("Preço é obrigatório");
@@ -150,9 +169,12 @@ public class ProdutoController {
                     .body("Preço deve ser maior que zero");
             }
             produto.setPreco(preco);
+            log.info("Preço setado: {}", produto.getPreco());
             
             // Validar e setar quantidade
+            log.info("Processando quantidade...");
             Object quantidadeObj = payload.get("quantidade");
+            log.info("Quantidade objeto: {} (tipo: {})", quantidadeObj, quantidadeObj != null ? quantidadeObj.getClass().getName() : "null");
             if (quantidadeObj == null) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body("Quantidade é obrigatória");
@@ -163,9 +185,12 @@ public class ProdutoController {
                     .body("Quantidade não pode ser negativa");
             }
             produto.setQuantidade(quantidade);
+            log.info("Quantidade setada: {}", produto.getQuantidade());
             
             // Validar e setar fornecedor
+            log.info("Processando fornecedorId...");
             Object fornecedorIdObj = payload.get("fornecedorId");
+            log.info("FornecedorId objeto: {} (tipo: {})", fornecedorIdObj, fornecedorIdObj != null ? fornecedorIdObj.getClass().getName() : "null");
             if (fornecedorIdObj == null) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body("Fornecedor é obrigatório");
@@ -176,23 +201,32 @@ public class ProdutoController {
                     .body("Fornecedor inválido");
             }
             produto.setFornecedorId(fornecedorId);
+            log.info("FornecedorId setado: {}", produto.getFornecedorId());
             
-            log.info("Produto a ser salvo: {}", produto);
+            log.info("Produto completo antes de salvar: {}", produto);
+            log.info("Salvando no banco de dados...");
+            
             Produtos saved = produtosRepository.save(produto);
-            log.info("Produto salvo com sucesso: {}", saved);
+            
+            log.info("Produto salvo com sucesso! ID: {}", saved.getId());
             
             return ResponseEntity.status(HttpStatus.CREATED).body(saved);
             
         } catch (IllegalArgumentException e) {
             log.error("Erro de argumento inválido", e);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body("Cargo inválido fornecido no header gerente-cargo: " + e.getMessage());
+                .body("Erro de validação: " + e.getMessage());
         } catch (NumberFormatException e) {
             log.error("Erro de formato de número", e);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body("Formato de número inválido: " + e.getMessage());
+        } catch (org.springframework.dao.DataAccessException e) {
+            log.error("Erro de acesso ao banco de dados", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body("Erro ao acessar banco de dados: " + e.getMessage());
         } catch (Exception e) {
             log.error("Erro inesperado ao criar produto", e);
+            log.error("Stack trace completo:", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body("Erro ao criar produto: " + e.getClass().getSimpleName() + " - " + e.getMessage());
         }
