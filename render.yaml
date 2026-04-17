@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: smartstock-backend
+    env: java
+    plan: free
+    buildCommand: "./mvnw clean package -DskipTests"
+    startCommand: "java -jar target/*.jar"
+    envVars:
+      - key: JAVA_OPTS
+        value: "-XX:+UseSerialGC -XX:MaxRAMPercentage=75"
+      - key: PORT
+        fromPort: true
+      - key: SPRING_PROFILES_ACTIVE
+        value: "prod"
+
