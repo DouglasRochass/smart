@@ -31,7 +31,13 @@ public class Fornecedor {
     private String endereco;
 
     @ValidCNPJ(message = "CNPJ deve ser válido")
+    @NotBlank(message = "CNPJ é obrigatório")
     private String cnpj;
+    
+    // Campos opcionais adicionais
+    private String cidade;
+    private String estado;
+    private String cep;
 
     // Manual getters
     public Long getId() { return id; }
@@ -40,6 +46,9 @@ public class Fornecedor {
     public String getEmail() { return email; }
     public String getEndereco() { return endereco; }
     public String getCnpj() { return cnpj; }
+    public String getCidade() { return cidade; }
+    public String getEstado() { return estado; }
+    public String getCep() { return cep; }
 
     // Manual setters
     public void setId(Long id) { this.id = id; }
@@ -48,4 +57,7 @@ public class Fornecedor {
     public void setEmail(String email) { this.email = email; }
     public void setEndereco(String endereco) { this.endereco = endereco; }
     public void setCnpj(String cnpj) { this.cnpj = cnpj; }
+    public void setCidade(String cidade) { this.cidade = cidade; }
+    public void setEstado(String estado) { this.estado = estado; }
+    public void setCep(String cep) { this.cep = cep; }
 }
